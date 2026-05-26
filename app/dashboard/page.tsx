@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 /* ─── Mock data ─── */
@@ -510,7 +510,7 @@ function ReportsTab() {
 }
 
 /* ─── Dashboard layout ─── */
-export default function DashboardPage() {
+function DashboardContent() {
   const searchParams = useSearchParams();
   const key = searchParams.get("key");
   const [activeTab, setActiveTab] = useState<TabId>("overview");
@@ -617,5 +617,13 @@ export default function DashboardPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", fontSize: 14, color: "var(--text-muted)" }}>Đang tải...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
